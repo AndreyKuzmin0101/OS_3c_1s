@@ -1,0 +1,29 @@
+#! /usr/bin/env python3
+
+import sys
+import random
+import time
+import os
+
+if len(sys.argv) != 2:
+	os._exit(1)
+
+try:
+	N = int(sys.argv[1])
+except ValueError:
+	os._exit(1)
+
+if N < 120 or N > 180:
+	os._exit(1)
+
+operators = ['+', '-', '*', '/']
+
+for _ in range(N):
+	X = random.randint(1, 9)
+	O = random.choice(operators)
+	Y = random.randint(1, 9)
+	os.write(1, f"{X} {O} {Y}".encode())
+	time.sleep(1)
+
+os.close(1)
+os._exit(0)
