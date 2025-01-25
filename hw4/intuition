@@ -1,0 +1,52 @@
+#!/bin/bash
+
+RED='\e[31m'
+GREEN='\e[32m'
+RESET='\e[0m'
+
+step=0
+hits=0
+misses=0
+numbers=()
+
+while :; do
+	random_number=${RANDOM: -1}
+
+	((step++))
+
+	echo -e "\nStep: ${step}"
+	read -p "Please enter number from 0 to 9 (q - quit): " input
+
+	case "$input" in
+		q)
+			exit 0
+		;;
+		[0-9])
+			if [[ "$input" -eq "$random_number" ]]; then
+				echo -e "Hit! My number: ${random_number}"
+				((hits++))
+				numbers+=("${GREEN}${random_number}${RESET}")
+			else
+				echo -e "Miss! My number: ${random_number}"
+				((misses++))
+				numbers+=("${RED}${random_number}${RESET}")
+			fi
+
+			if (( ${#numbers[@]} > 10 )); then
+				numbers=( "${numbers[@]: -10}" )
+			fi
+
+			total_attempts=$((hits + misses))
+			hit_percent=$((hits * 100 / total_attempts))
+			miss_percent=$((100 - hit_percent))
+
+		echo "Hit: ${hit_percent}% Miss: ${miss_percent}%"
+
+		echo -e "Numbers: ${numbers[@]}"
+		;;
+		*)
+			echo "Invalid error!"
+			continue
+		;;
+	esac
+done
